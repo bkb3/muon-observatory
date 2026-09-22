@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="refresh" content="600">
+    <title>Cosmic Ray Muon Observatory</title>
+    <link rel="icon" type="image/x-icon"
+        href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD29vYAtLS0AFRUVABUVFQA1tbWAP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A1tbWAFRUVABUVFQA1tbWAP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wA=">
+
+    <script src="static/js/chart.js"></script>
+    <link rel="stylesheet" href="static/css/muons.css">
+</head>
+
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>🌌 Cosmic Muon Particle Observatory</h1>
+            <div class="live-tag" id="env-badge">Connecting...</div>
+        </header>
+        <div class="filter-card">
+            <div class="filter-group">
+                <label for="datePicker">Observation Date</label>
+                <input type="date" id="datePicker" onchange="loadSelectedDate()">
+            </div>
+            <button id="filterTracksBtn" class="btn filter-btn" onclick="toggleTrackFilter()">
+                <span id="filterIcon">🎯</span> <span id="filterLabel">Show Tracks Only</span>
+            </button>
+            <a class="download-btn" id="export-link" href="#">Export Dataset (.CSV)</a>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card stat-card-status">
+                <div class="stat-label">System Performance</div>
+                <div class="stat-value" style="font-size:12px;color:#16a34a">ACTIVE MONITORING</div>
+                <div class="stat-subtext" id="status">Loading...</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #06b6d4;">
+                <div class="stat-label">Today's Events</div>
+                <div class="stat-value" style="color:#0891b2" id="today_muons">0</div>
+                <div class="stat-subtext">Events logged today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">All-Time Hits / Flux Rate</div>
+                <div class="stat-value"><span id="total_muons">0</span>
+                    <span style="font-size:11px;color:#64748b">(<span id="flux_rate">0.0/hr</span>)</span>
+                </div>
+                <div class="stat-subtext">Rolling capture velocity</div>
+            </div>
+            <div class="stat-card stat-card-interval">
+                <div class="stat-label">Saturation / Mean Interval</div>
+                <div class="stat-value" style="color:#7c3aed"><span id="mean_saturation">0.0/255</span> <span
+                        style="font-size:11px;color:#64748b">(<span id="avg_interval">0.0s</span>)</span></div>
+                <div class="stat-subtext">Mean charge depth index</div>
+            </div>
+            <div class="stat-card stat-card-records">
+                <div class="stat-label">All-Time Peak Records</div>
+                <div class="stat-value" style="color:#d97706"><span id="max_bright">0</span> <span
+                        style="font-size:11px;color:#64748b">Max (<span id="max_size">0px</span>)</span></div>
+                <div class="stat-subtext">Absolute saturation ceiling</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Cosmic TRNG Byte</div>
+                <div class="stat-value" style="color: #3b82f6;">
+                    <span id="trngValue">--</span>
+                    <span style="font-size:11px;color:#64748b">(<span id="trng_meta">Waiting...</span>)</span>
+                </div>
+                <div class="stat-subtext"><span id="pool_bits">Entropy pool bits: ---</span> </div>
+            </div>
+        </div>
+        <div class="plots-grid" style="margin-bottom:16px">
+            <div class="chart-card">
+                <h2>🖼️ Sensor Plane Tracks</h2>
+                <div class="gallery" id="gallery_cards"></div>
+            </div>
+            <div class="chart-card">
+                <h2>📋 Detection Chrono-Log</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Cluster Size</th>
+                                <th>Peak Intensity</th>
+                                <th>Category</th>
+                                <th>Certainty Probability</th>
+                            </tr>
+                        </thead>
+                        <tbody id="log_rows"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="plots-grid plots-grid-lower">
+            <div class="chart-card">
+                <h2>📊 Quantum Randomness Profile (Poisson Fit)</h2>
+                <div class="chart-box"><canvas id="poissonChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h2 id="classification-title">📐 Morphological Structural Classification ---- </h2>
+                <div class="chart-box"
+                    style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; height: calc(100% - 40px);">
+
+                    <!-- Artefacts -->
+                    <div class="stat-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>🛡️ Artefacts</strong>
+                            <span id="class_artefacts">0%</span>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.1); height: 5px; border-radius: 3px; overflow: hidden; margin: 6px 0;">
+                            <div id="bar_artefacts"
+                                style="width: 0%; height: 100%; background: #888; transition: width 0.4s;"></div>
+                        </div>
+                        <p style="font-size:0.65em; color:#aaa; margin:2px 0 0 0;">
+                            Thermal background variance, hot camera pixels, or transient sensor anomalies.
+                        </p>
+                    </div>
+
+                    <!-- Dots -->
+                    <div class="stat-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>🟢 Dots</strong>
+                            <span id="class_dots">0%</span>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.1); height: 5px; border-radius: 3px; overflow: hidden; margin: 6px 0;">
+                            <div id="bar_dots"
+                                style="width: 0%; height: 100%; background: #2ecc71; transition: width 0.4s;"></div>
+                        </div>
+                        <p style="font-size:0.65em; color:#aaa; margin:2px 0 0 0;">
+                            Low-energy radiation particles (Beta/Electrons) or vertical Zenith striking muons.
+                        </p>
+                    </div>
+
+                    <!-- Tracks -->
+                    <div class="stat-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>⚡ Tracks</strong>
+                            <span id="class_tracks">0%</span>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.1); height: 5px; border-radius: 3px; overflow: hidden; margin: 6px 0;">
+                            <div id="bar_tracks"
+                                style="width: 0%; height: 100%; background: #3498db; transition: width 0.4s;"></div>
+                        </div>
+                        <p style="font-size:0.65em; color:#aaa; margin:2px 0 0 0;">
+                            High-energy cosmic-ray muons cutting cleanly across the sensor plane leaving linear paths.
+                        </p>
+                    </div>
+
+                    <!-- Worms -->
+                    <div class="stat-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>🐛 Worms</strong>
+                            <span id="class_worms">0%</span>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.1); height: 5px; border-radius: 3px; overflow: hidden; margin: 6px 0;">
+                            <div id="bar_worms"
+                                style="width: 0%; height: 100%; background: #e67e22; transition: width 0.4s;"></div>
+                        </div>
+                        <p style="font-size:0.65em; color:#aaa; margin:2px 0 0 0;">
+                            Low-energy scattering secondary particles winding through the sensor substrate material.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="plots-grid plots-grid-lower" style="margin-top: 16px;">
+            <div class="chart-card">
+                <h2>⏱️ Diurnal Activity (Hour-of-Day Distribution)</h2>
+                <div class="chart-box"><canvas id="hourlyChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h2>⏳ Waiting Time Spacing (Inter-Arrival Decay)</h2>
+                <div class="chart-box"><canvas id="intervalChart"></canvas></div>
+            </div>
+        </div>
+        <footer class="app-footer">
+            <p>Radio Telescope Dashboard • Cosmic Ray Survey</p>
+            <p>Author: <a href="https://github.com/bkb3" target="_blank" rel="noopener noreferrer">bkb3</a></p>
+        </footer>
+    </div>
+
+    <div id="zoomModal" class="modal" onclick="closeZoom()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img id="modalImg" class="modal-img" src="" alt="Zoomed Track">
+            <div id="modalCaption" class="modal-caption"></div>
+            <button class="close-btn" onclick="closeZoom()">Dismiss View</button>
+        </div>
+    </div>
+    <script src="static/js/muons.js"></script>
+</body>
+
+</html>
