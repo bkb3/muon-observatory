@@ -103,7 +103,7 @@ function loadSelectedDate() {
     const dateVal = document.getElementById("datePicker").value;
     if (dateVal) {
         sessionStorage.setItem("scrollPos", window.scrollY);
-        window.location.href = "/?date=" + dateVal;
+        window.location.href = "?date=" + dateVal;
     }
 }
 window.loadSelectedDate = loadSelectedDate;
@@ -405,9 +405,9 @@ function runServerlessGitHubPipeline() {
     datePicker.value = targetDate;
 
     const dateSegments = targetDate.split('-');
-    const dailyCsvPath = `data/${dateSegments[0]}/${dateSegments[1]}/${dateSegments[2]}/muon_log.csv`;
-    const historicCsvPath = `/static/historical_data.csv`;
-    const imageRoot = `data/${dateSegments[0]}/${dateSegments[1]}/${dateSegments[2]}/`;
+    const dailyCsvPath = `./data/${dateSegments[0]}/${dateSegments[1]}/${dateSegments[2]}/muon_log.csv`;
+    const historicCsvPath = `./static/historical_data.csv`;
+    const imageRoot = `./data/${dateSegments[0]}/${dateSegments[1]}/${dateSegments[2]}/`;
 
     document.getElementById('status').innerText = `GitHub Static Data Parsing`;
 
