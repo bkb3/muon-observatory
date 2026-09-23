@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 import uvicorn
 import onnxruntime as ort
+import datetime
 
 cv2.setNumThreads(0)
 os.environ["OMP_NUM_THREADS"] = "1"
@@ -485,10 +486,13 @@ def get_poisson_chart_data():
 def get_hourly_distribution(date: str = Query(None)):
     """
     Returns 24-hour distribution. If 'date' query parameter is omitted or empty,
-    aggregates ALL total historical track events.
+    it returns today's historical track events.
     """
     global historical_events_cache
     hours_count = [0] * 24
+
+    if not date:
+        date = datetime.datetime.utcnow().strftime("%Y-%m-%d")
     
     for r in historical_events_cache:
         try:

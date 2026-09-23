@@ -582,18 +582,30 @@ function runServerlessGitHubPipeline() {
             if (historicRows.length > 0) {
                 const latestRow = historicRows[historicRows.length - 1];
                 const timeParts = latestRow[0].split('.');
-                if (timeParts.length === 2) {
-                    const micros = parseInt(timeParts[1]) || 0;
-                    const rand100 = (micros % 100) + 1;
-                    const randByteHex = `0x${(micros % 256).toString(16).padStart(2, '0')}`;
-                    const rawType = latestRow[6] ? latestRow[6].trim() : "unknown";
-                    const capType = rawType.charAt(0).toUpperCase() + rawType.slice(1);
 
-                    document.getElementById('trngValue').innerText = `${rand100} (${randByteHex})`;
-                    document.getElementById('trng_meta').innerText = `Source: ${capType}`;
-                    document.getElementById('pool_bits').innerText = `Entropy pool bits: ${historicRows.length * 8}`;
+                let micros = 0;
+                if (timeParts.length === 2) {
+                    micros = parseInt(timeParts[1]) || 0;
+                } else {
+                    let hash = 0;
+                    for (let i = 0; i < latestRow[0].length; i++) {
+                        hash = (hash << 5) - hash + latestRow[0].charCodeAt(i);
+                        hash |= 0; // Convert to a signed 32-bit integer
+                    }
+                    micros = Math.abs(hash) % 1000000;
                 }
+
+                const rand100 = (micros % 100) + 1;
+                const randByteHex = `0x${(micros % 256).toString(16).padStart(2, '0')}`;
+
+                const rawType = latestRow[6] ? latestRow[6].trim() : "tracks";
+                const capType = rawType.toLowerCase().startsWith('track') ? "Tracks" : rawType.charAt(0).toUpperCase() + rawType.slice(1);
+
+                document.getElementById('trngValue').innerText = `${rand100} (${randByteHex})`;
+                document.getElementById('trng_meta').innerText = `Source: ${capType}`;
+                document.getElementById('pool_bits').innerText = `Entropy pool bits: ${historicRows.length * 8}`;
             }
+
 
             // Render Poisson Fit Chart using ALL-TIME historic data
             const hourlyCountsArray = Object.values(hourlyMap);
