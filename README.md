@@ -57,7 +57,7 @@ The classifier utilizes a compact, custom deep convolutional footprint optimized
 
 The system was evaluated against a validation dataset containing 3,701 total unique events, achieving an **Overall Multiclass Matthews Correlation Coefficient (MCC) of 0.9273** and an **overall accuracy of 95%**.
 
-![Performance metrics](.figs/metrics_muon_mini_bce.png)
+![Performance metrics](figs/metrics_muon_mini_bce.png)
 
 The performance metrics can be understood as:
 
@@ -70,11 +70,11 @@ The performance metrics can be understood as:
   * Because low-energy electrons are highly rare and easily attenuated by spatial pooling, they are difficult to capture cleanly.
   * Out of 100 predictions labeled as `WORMS`, **66 will be real, curly electron tracks**. The network safely captures **24% of all total worm events** passing across the drive array, routing the remaining low-signal variants safely into the unverified noise bin.
 
-## 🛠️ Dynamic One-vs-Rest Thresholding ($\tau\$)
+## 🛠️ Dynamic One-vs-Rest Thresholding ($\tau$)
 
 Standard multi-class systems force predictions to sum to 100%, causing the network to confidently guess a winner even on meaningless black pixels.
 
-To prevent this, this pipeline scores each category completely independently using a Sigmoid layer. There's an optimization sweep across the validation data to locate the absolute best threshold cutoff (\(\tau\)) that maximizes the Matthews Correlation Coefficient for each individual target category.
+To prevent this, this pipeline scores each category completely independently using a Sigmoid layer. There's an optimization sweep across the validation data to locate the absolute best threshold cutoff ($\tau$) that maximizes the Matthews Correlation Coefficient for each individual target category.
 
 ```python
 OPTIMAL_THRESHOLDS = {
@@ -89,7 +89,7 @@ OPTIMAL_THRESHOLDS = {
 
 When an active particle cluster clears multiple independent threshold gates simultaneously, the system evaluates the **Margin of Victory**:
 
-\[\text{Margin} = \text{Sigmoid Probability} - \tau_{\text{class}}\]
+$$\text{Margin} = \text{Sigmoid Probability} - \tau_{\text{class}}$$
 
 The category that beats its optimized validation threshold by the largest absolute mathematical distance is awarded the final classification designation, preventing weak default assumptions.
 
