@@ -13,4 +13,3 @@ __pycache__/
 *.pyc
 *.bak
 github_deploy_key*
-*.log
