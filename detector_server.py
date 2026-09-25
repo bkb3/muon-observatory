@@ -413,6 +413,7 @@ def particle_detector_loop():
 
         confidence_str = f"{round(confidence * 100, 1)}%"
         new_row = [timestamp, pixel_area, max_val, img_name, w, h, particle_type, confidence_str]
+        csv_file = get_or_create_daily_csv(slash_path)
         
         with open(csv_file, mode='a', newline='') as f:
             writer = csv.writer(f)

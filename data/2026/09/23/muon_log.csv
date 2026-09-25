@@ -1,3 +1,4 @@
+Timestamp,Pixel_Count,Max_Brightness,Image_Filename,Width,Height,Particle_Type,Probability
 2026-09-23 00:21:01.880621,4,165,artefacts_1790102161.png,1,4,artefacts,73.7%
 2026-09-23 00:57:21.249431,5,255,worms_1790104341.png,3,3,worms,20.6%
 2026-09-23 01:04:30.081577,9,255,worms_1790104770.png,4,7,worms,29.5%
