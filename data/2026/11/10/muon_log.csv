@@ -1,0 +1,5 @@
+Timestamp,Pixel_Count,Max_Brightness,Image_Filename,Width,Height,Particle_Type,Probability
+2026-11-10 01:47:13.374593,5,255,artefacts_1794254533.png,3,2,artefacts,0.2%
+2026-11-10 02:21:18.316703,7,253,worms_1794256578.png,3,3,worms,45.6%
+2026-11-10 03:16:46.272027,4,151,tracks_1794259906.png,1,4,tracks,84.5%
+2026-11-10 03:24:57.429169,6,228,worms_1794260397.png,3,2,worms,38.0%
