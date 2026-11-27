@@ -35,6 +35,7 @@ Timestamp,Pixel_Count,Max_Brightness,Image_Filename,Width,Height,Particle_Type,P
 2026-11-08 20:50:46.958825,4,244,tracks_1794150346.png,3,3,tracks,86.6%
 2026-11-08 21:28:02.824192,6,226,tracks_1794152582.png,3,4,tracks,72.4%
 2026-11-14 14:12:52.330349,8,255,tracks_1794644872.png,5,5,tracks,82.8%
+2026-11-25 15:05:36.809969,4,204,tracks_1795598436.png,3,3,tracks,74.9%
 2026-11-23 02:34:28.324383,6,255,tracks_1795380568.png,1,6,tracks,98.7%
 2026-11-23 15:08:45.164124,12,255,tracks_1795425825.png,7,5,tracks,96.9%
 2026-11-23 18:15:40.012227,6,255,tracks_1795437040.png,4,3,tracks,87.6%
@@ -147,4 +148,4 @@ Timestamp,Pixel_Count,Max_Brightness,Image_Filename,Width,Height,Particle_Type,P
 2026-09-28 08:12:37.435751,8,255,tracks_1790562457.png,5,3,tracks,73.8%
 2026-09-28 18:56:27.582366,10,255,tracks_1790601087.png,6,5,tracks,100.0%
 2026-09-27 20:31:17.074125,4,184,tracks_1790520377.png,3,3,tracks,63.2%
-2026-11-25 15:05:36.809969,4,204,tracks_1795598436.png,3,3,tracks,74.9%
+2026-11-26 17:34:59.649270,5,255,tracks_1795693799.png,3,3,tracks,77.4%
